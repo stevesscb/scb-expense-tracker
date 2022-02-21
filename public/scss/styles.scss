@@ -7,9 +7,18 @@
   justify-content: space-between;
 }
 
+@media screen and (max-width: 991px) {
+
+  .btn-sm,
+  .dropdown {
+    margin-top: 2em;
+  }
+}
+
 /* Navbar End */
 
-h1 {
+h1,
+h6 {
   text-align: center;
-  margin-top: 1em;
+  margin: 1em 0 1em 0;
 }
