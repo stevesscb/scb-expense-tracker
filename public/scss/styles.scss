@@ -22,3 +22,22 @@ h6 {
   text-align: center;
   margin: 1em 0 1em 0;
 }
+
+/* Wrapper Start */
+
+#wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+#wrapper div {
+  width: 100%;
+}
+
+@media screen and (min-width: 991px) {
+  #wrapper div {
+    width: 50%;
+  }
+}
+
+/* Wrapper End */
