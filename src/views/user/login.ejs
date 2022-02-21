@@ -47,7 +47,7 @@ $(document).ready(() => {
       url: '/api/user/login',
       data
     }).then(() => {
-      window.location.href = `/my/wishlists`
+      window.location.href = `/my/dashboard`
     }).catch((err) => {
       $('#pages-user-login').html(generatePage(data, err.response.data))
     })

@@ -53,7 +53,7 @@ $(document).ready(() => {
       url: '/api/user/signup',
       data
     }).then(() => {
-      window.location.href = `/my/wishlists`
+      window.location.href = `/user/login`
     }).catch((err) => {
       console.log(err)
       $('#pages-user-signup').html(generatePage(data, err.response.data))

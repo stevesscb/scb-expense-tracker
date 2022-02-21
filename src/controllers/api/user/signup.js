@@ -33,8 +33,7 @@ const controllersApiUserSignup = async (req, res) => {
 
     const dataToSave = {
       email: verifiedData.email,
-      passwordHash: await bcrypt.hash(verifiedData.password, 10),
-      avatar: verifiedData.avatar // add this line!
+      passwordHash: await bcrypt.hash(verifiedData.password, 10)
     }
     const newUser = await prisma.user.create({ data: dataToSave })
 
