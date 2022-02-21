@@ -1,4 +1,60 @@
 <%- contentFor('styles') %>
 <%- contentFor('scripts') %>
 <%- contentFor('body') %>
+
 <h1>My Dashboard</h1>
+
+<div>
+  <canvas id="myChart"></canvas>
+</div>
+
+<div class="list-group">
+  <a href="#" class="list-group-item list-group-item-action">Dapibus ac facilisis in</a>
+
+
+  <a href="#" class="list-group-item list-group-item-action list-group-item-primary">A simple primary list group item</a>
+  <a href="#" class="list-group-item list-group-item-action list-group-item-secondary">A simple secondary list group item</a>
+
+</div>
+
+<script>
+  const labels = [
+    'APPS',
+    'CAR',
+    'CLOTHES',
+    'PHONE',
+    'EATING OUT',
+    'ENTERTAINMENT',
+    'GIFTS',
+    'GROCERIES',
+    'HEALTH',
+    'PETS',
+    'HOUSE',
+    'TRANSPORT',
+    'DEPOSIT',
+    'SAVINGS',
+  ];
+
+  const data = {
+    labels: labels,
+    datasets: [{
+      label: 'My First dataset',
+      backgroundColor: 'rgb(255, 99, 132)',
+      borderColor: 'rgb(255, 99, 132)',
+      data: [0, 10, 5, 2, 20, 30, 45],
+    }]
+  };
+
+  const config = {
+    type: 'doughnut',
+    data: data,
+    options: {}
+  };
+</script>
+
+<script>
+  const myChart = new Chart(
+    document.getElementById('myChart'),
+    config
+  );
+</script>

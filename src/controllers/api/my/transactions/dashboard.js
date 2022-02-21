@@ -3,17 +3,23 @@ import handleErrors from '../../../_helpers/handle-errors.js'
 
 const controllersApiMyDashboard = async (req, res) => {
   try {
-    const { params: { id } } = req
-    const foundWishlist = await prisma.wishlist.findUnique({
-      where: { id: Number(id) },
-      rejectOnNotFound: true,
+    const userId = req.session.user.id
+
+    const foundTransactions = await prisma.transaction.findMay({
+      where: {
+        userId
+      },
+      orderBy: {
+        date: 'asc'
+      },
       include: {
-        user: true
+        category: true
       }
     })
-    return res.status(200).json(foundWishlist)
+
+    return res.json(200).json(foundTransactions)
   } catch (err) {
-    return handleErrors(res, err)
+    return handleErrors(res, res)
   }
 }
 
