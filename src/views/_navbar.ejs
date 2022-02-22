@@ -1,4 +1,17 @@
+<script>
+$(document).ready(() => {
+  $('#user-logout').on('click', (e) => {
+    e.preventDefault()
 
+    axios({
+      method: 'DELETE',
+      url: '/api/user/logout'
+    }).then(() => {
+      window.location.href = '/user/login'
+    })
+  })
+})
+</script>
 
 <nav id="navbar" class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="container-fluid">
@@ -6,13 +19,13 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
-      <ul class="navbar-nav">
+      <ul class="navbar-nav justify-content-between align-items-center flex-grow-1">
 
-        <li class="nav-item dropdown">
+        <li class="nav-item dropdown mb-3">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Filter
           </a>
-          <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+          <ul class="dropdown-menu mb-3" aria-labelledby="navbarDropdownMenuLink">
             <li><a class="dropdown-item" href="#">Day</a></li>
             <li><a class="dropdown-item" href="#">Week</a></li>
             <li><a class="dropdown-item" href="#">Month</a></li>
@@ -21,12 +34,12 @@
         </li>
 
 
-        <li class="nav-item">
+        <li class="nav-item mb-3">
         <button type="button" class="btn btn-success btn-lg btn-sm">Add Transaction</button>
         </li>
 
-        <li class="nav-item">
-          <button type="button" class="btn btn-warning btn-lg btn-sm">Log out</button>
+        <li class="nav-item mb-3">
+          <button type="button" id="user-logout" class="btn btn-warning btn-lg btn-sm">Log out</button>
         </li>
 
       </ul>

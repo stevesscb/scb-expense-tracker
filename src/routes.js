@@ -7,6 +7,7 @@ const router = Router()
 // API | USER
 router.post('/api/user/signup', (await import('./controllers/api/user/signup.js')).default)
 router.post('/api/user/login', (await import('./controllers/api/user/login.js')).default)
+router.delete('/api/user/logout', (await import('./controllers/api/user/logout.js')).default)
 
 // API | MY DASHBOARD
 router.get('/api/my/transactions/dashboard', authenticateUser('json'), (await import('./controllers/api/my/transactions/dashboard.js')).default)
