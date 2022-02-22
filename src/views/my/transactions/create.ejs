@@ -1,0 +1,62 @@
+<%- contentFor('styles') %>
+<%- contentFor('scripts') %>
+<%- contentFor('body') %>
+
+<div id="pages-my-add-transaction" class="container text-center">
+  <h1 class="my-3">Add Transaction</h1>
+
+  <div class="row mb-3">
+    <div class="col-12 col-md-10 offset-md-1 col-lg-8 offset-lg-2">
+      <canvas id="myChart" class="w-100"></canvas>
+    </div>
+  </div>
+
+  <h6>Transactions</h6>
+
+  <div class="list-group">
+    <a href="#" class="list-group-item list-group-item-action list-group-item-primary">A simple primary list group item</a>
+    <a href="#" class="list-group-item list-group-item-action list-group-item-secondary">A simple secondary list group item</a>
+  </div>
+</div>
+
+<script>
+  const labels = [
+    'APPS',
+    'CAR',
+    'CLOTHES',
+    'PHONE',
+    'EATING OUT',
+    'ENTERTAINMENT',
+    'GIFTS',
+    'GROCERIES',
+    'HEALTH',
+    'PETS',
+    'HOUSE',
+    'TRANSPORT',
+    'DEPOSIT',
+    'SAVINGS',
+  ];
+
+  const data = {
+    labels: labels,
+    datasets: [{
+      label: 'My First dataset',
+      backgroundColor: 'rgb(255, 99, 132)',
+      borderColor: 'rgb(255, 99, 132)',
+      data: [0, 10, 5, 2, 20, 30, 45],
+    }]
+  };
+
+  const config = {
+    type: 'doughnut',
+    data: data,
+    options: {}
+  };
+</script>
+
+<script>
+  const myChart = new Chart(
+    document.getElementById('myChart'),
+    config
+  );
+</script>
