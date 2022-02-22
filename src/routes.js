@@ -12,14 +12,14 @@ router.delete('/api/user/logout', (await import('./controllers/api/user/logout.j
 // API | MY DASHBOARD
 router.get('/api/my/transactions/dashboard', authenticateUser('json'), (await import('./controllers/api/my/transactions/dashboard.js')).default)
 
+// API | ADD TRANSACTION
+router.get('/api/my/transactions/new', authenticateUser('json'), (await import('./controllers/api/my/transactions/new.js')).default)
+
 // PAGES | USER
 router.get('/user/signup', (await import('./controllers/pages/user/signup.js')).default)
 router.get('/user/login', (await import('./controllers/pages/user/login.js')).default)
 
 // PAGES | USER *AUTHENTICATION REQUIRED
 router.get('/my/transactions/dashboard', authenticateUser('html'), (await import('./controllers/pages/my/transactions/dashboard.js')).default)
-
-// STATIC
-router.get('/', (await import('./controllers/static/home.js')).default)
 
 export default router
