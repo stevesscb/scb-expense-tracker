@@ -33,10 +33,17 @@ $(document).ready(() => {
           </ul>
         </li>
 
+        <% if (locals?.addExpense) {%>
+          <li class="nav-item mb-3">
+            <a href="create" class="btn btn-success btn-lg btn-sm">Add Transaction</a>
+          </li>
+        <% } %>
 
-        <li class="nav-item mb-3">
-        <button type="button" class="btn btn-success btn-lg btn-sm">Add Transaction</button>
-        </li>
+        <% if (locals?.back) {%>
+          <li class="nav-item mb-3">
+            <a href="dashboard" class="btn btn-success btn-lg btn-sm">back</a>
+          </li>
+        <% } %>
 
         <li class="nav-item mb-3">
           <button type="button" id="user-logout" class="btn btn-warning btn-lg btn-sm">Log out</button>

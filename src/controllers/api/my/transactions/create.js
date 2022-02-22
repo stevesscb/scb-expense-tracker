@@ -25,7 +25,6 @@ const controllersApiMyTransactionCreate = async (req, res) => {
       abortEarly: false,
       stripUnknown: true
     })
-    console.log(verifiedData)
 
     const newTransaction = await prisma.transaction.create({
       data: {
