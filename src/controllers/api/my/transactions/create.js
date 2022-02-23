@@ -7,7 +7,10 @@ const createSchema = yup.object({
   type: yup.string().required(),
   description: yup.string(),
   amount: yup.number().min(0.01),
-  date: yup.date()
+  date: yup.date(),
+  category: yup.object({
+    name: yup.string().required()
+  })
 })
 
 const controllersApiMyTransactionCreate = async (req, res) => {
@@ -29,7 +32,22 @@ const controllersApiMyTransactionCreate = async (req, res) => {
     const newTransaction = await prisma.transaction.create({
       data: {
         ...verifiedData,
-        userId
+        user: {
+          connect: {
+            id: userId
+          }
+        },
+        category: {
+          connectOrCreate: {
+            where: {
+              name: verifiedData.category.name
+            },
+            create: {
+              name: verifiedData.category.name,
+              type: verifiedData.type
+            }
+          }
+        }
       }
     })
 

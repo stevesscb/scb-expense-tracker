@@ -5,12 +5,23 @@
 <div id="pages-my-add-transaction" class="container text-center">
   <h1 class="my-3">Add Transaction</h1>
 
-<div class="dateStamp">
-  <p>23/02/2022</p>
-</div>
-
 <div class="inputContainer">
   <div class="transactionInput row vh-100 align-items-center">
+
+<div class="dropdown">
+  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+    Type
+  </button>
+  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+    <li><a class="dropdown-item" href="#">Income</a></li>
+    <li><a class="dropdown-item" href="#">Expense</a></li>
+  </ul>
+</div>
+
+<div class="dateStamp">
+  <label for="start">Transaction date:</label>
+  <input type="date" id="start" name="trip-start" value="2018-07-22">
+</div>
 
     <div class="input-group input-group-lg">
       <span class="input-group-text">$</span>
@@ -24,9 +35,9 @@
     </div>
 
   <div class="input-group mb-3">
-    <select class="form-select" id="inputGroupSelect02">
+    <select class="form-select" name="category[name]" id="inputGroupSelect02">
       <option selected>Choose...</option>
-      <option value="1">Apps</option>
+      <option value="Apps">Apps</option>
       <option value="2">Car</option>
       <option value="3">Clothes</option>
       <option value="3">Phone</option>

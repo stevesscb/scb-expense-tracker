@@ -18,15 +18,15 @@ model User {
 }
 
 model Transaction {
-  id          Int      @id @default(autoincrement())
-  type        Type     @default(EXPENSE)
+  id          Int       @id @default(autoincrement())
+  type        Type      @default(EXPENSE)
   amount      Float
   description String?
-  date        DateTime @db.Timestamptz()
-  user        User     @relation(fields: [userId], references: [id])
-  userId      Int
-  category    Category @relation(fields: [categoryId], references: [id])
-  categoryId  Int
+  date        DateTime  @db.Timestamptz()
+  user        User?     @relation(fields: [userId], references: [id])
+  userId      Int?
+  category    Category? @relation(fields: [categoryId], references: [id])
+  categoryId  Int?
 }
 
 enum Type {
@@ -36,7 +36,7 @@ enum Type {
 
 model Category {
   id           Int           @id @default(autoincrement())
-  category     String
+  name         String        @unique
   type         Type          @default(EXPENSE)
   transactions Transaction[]
 }
