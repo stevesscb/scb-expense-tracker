@@ -2,60 +2,97 @@
 <%- contentFor('scripts') %>
 <%- contentFor('body') %>
 
-<div id="pages-my-add-transaction" class="container text-center">
-  <h1 class="my-3">Add Transaction</h1>
+<div id="pages-my-add-transaction" class="container text-center"></div>
 
-<div class="inputContainer">
-  <div class="transactionInput row vh-100 align-items-center">
+<script>
+const generateForm = (values = {}, errors = {}) => {
+return `
+      <div class="inputContainer">
+        <div class="transactionInput row vh-100 align-items-center">
+          <form id="transaction-form">
+            <div class="dateStamp">
+              <label for="start">Transaction date:</label>
+              <input type="date" id="start" name="trip-start" value="2018-07-22">
+            </div>
 
-<div class="dropdown">
-  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-    Type
-  </button>
-  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-    <li><a class="dropdown-item" href="#">Income</a></li>
-    <li><a class="dropdown-item" href="#">Expense</a></li>
-  </ul>
-</div>
+            <div class="input-group mb-3">
+              <label class="input-group-text" for="inputGroupSelect02">Type</label>
+              <select class="form-select" name="type" id="inputGroupSelect02">
+                <option value="EXPENSE">Expense</option>
+                <option value="INCOME">Income</option>
+              </select>
+            </div>
 
-<div class="dateStamp">
-  <label for="start">Transaction date:</label>
-  <input type="date" id="start" name="trip-start" value="2018-07-22">
-</div>
+            <div class="input-group input-group-lg">
+              <span class="input-group-text">$</span>
+              <span class="input-group-text">0.00</span>
+              <input type="text" class="form-control" name="amount" aria-label="Dollar amount (with dot and two decimal places)">
+            </div>
 
-    <div class="input-group input-group-lg">
-      <span class="input-group-text">$</span>
-      <span class="input-group-text">0.00</span>
-      <input type="text" class="form-control" aria-label="Dollar amount (with dot and two decimal places)">
-    </div>
+            <div class="input-group">
+              <span class="input-group-text">Description(optional)</span>
+              <textarea class="form-control" name="description" aria-label="With textarea"></textarea>
+            </div>
 
-    <div class="input-group">
-      <span class="input-group-text">Description(optional)</span>
-      <textarea class="form-control" aria-label="With textarea"></textarea>
-    </div>
+            <div class="input-group mb-3">
+              <label class="input-group-text" for="inputGroupSelect02">Category</label>
+              <select class="form-select" name="category[name]" id="inputGroupSelect02">
+                <option selected>Choose...</option>
+                <option value="Apps">Apps</option>
+                <option value="Car">Car</option>
+                <option value="Clothes">Clothes</option>
+                <option value="Phone">Phone</option>
+                <option value="Eating out">Eating out</option>
+                <option value="Entertainment">Entertainment</option>
+                <option value="Gifts">Gifts</option>
+                <option value="Groceries">Groceries</option>
+                <option value="Health">Health</option>
+                <option value="Pets">Pets</option>
+                <option value="House">House</option>
+                <option value="Transport">Transport</option>
+                <option value="Deposit" class="visually-hidden">Deposit</option>
+                <option value="Savings" class="visually-hidden">Savings</option>
+              </select>
+            </div>
 
-  <div class="input-group mb-3">
-    <select class="form-select" name="category[name]" id="inputGroupSelect02">
-      <option selected>Choose...</option>
-      <option value="Apps">Apps</option>
-      <option value="2">Car</option>
-      <option value="3">Clothes</option>
-      <option value="3">Phone</option>
-      <option value="3">Eating out</option>
-      <option value="3">Entertainment</option>
-      <option value="3">Gifts</option>
-      <option value="3">Groceries</option>
-      <option value="3">Health</option>
-      <option value="3">Pets</option>
-      <option value="3">House</option>
-      <option value="3">Transport</option>
-      <option value="3">Deposit</option>
-      <option value="3">Savings</option>
-    </select>
-    <label class="input-group-text" for="inputGroupSelect02">Category</label>
-  </div>
+            <button type="submit" value="submit" class="btn btn-success btn
+            btn-primary btn-lg d-grid gap-2 col-6 mx-auto">Add</button>
+          </form>
+        </div>
+      </div>
+  `
+}
 
-    <button type="button" value="submit" class="btn btn-success btn btn-primary btn-lg d-grid gap-2 col-6 mx-auto">Add</button>
+const generatePage = (values, errors) => {
+  return `
+    <h1 class="text-center">Add Transaction</h1>
 
-  </div>
-</div>
+    ${generateForm(values, errors)}
+  `
+}
+
+$(document).ready(() => {
+  $('#pages-my-add-transaction').html(generatePage())
+
+  $('#pages-my-add-transaction').on('submit', '#transaction-form', (e) => {
+    e.preventDefault()
+
+    const data = new FormData(e.target)
+    $('#transaction-form button[type="submit"]').attr('disabled', true)
+
+    axios({
+      method: 'POST',
+      url: '/api/my/transactions/create',
+      data
+    }).then(() => {
+      window.location.href = `/my/transactions/dashboard`
+    }).catch((err) => {
+      console.log(err)
+      $('#pages-my-add-transaction').html(generatePage(data, err.response.data))
+    })
+  })
+})
+
+$( '#inputGroupSelect02 ').on('change', removeClass())
+
+</script>
