@@ -2,61 +2,49 @@
 <%- contentFor('scripts') %>
 <%- contentFor('body') %>
 
-<div id="pages-my-transactions-dashboard" class="container text-center">
-  <h1 class="my-3">New Transaction</h1>
+<div id="pages-my-add-transaction" class="container text-center">
+  <h1 class="my-3">Add Transaction</h1>
 
-  <div class="row mb-3">
-    <div class="col-12 col-md-10 offset-md-1 col-lg-8 offset-lg-2">
-      <canvas id="myChart" class="w-100"></canvas>
-    </div>
-  </div>
-
-  <h6>Transactions</h6>
-
-  <div class="list-group">
-    <a href="#" class="list-group-item list-group-item-action list-group-item-primary">A simple primary list group item</a>
-    <a href="#" class="list-group-item list-group-item-action list-group-item-secondary">A simple secondary list group item</a>
-  </div>
+<div class="dateStamp">
+  <p>23/02/2022</p>
 </div>
 
-<script>
-  const labels = [
-    'APPS',
-    'CAR',
-    'CLOTHES',
-    'PHONE',
-    'EATING OUT',
-    'ENTERTAINMENT',
-    'GIFTS',
-    'GROCERIES',
-    'HEALTH',
-    'PETS',
-    'HOUSE',
-    'TRANSPORT',
-    'DEPOSIT',
-    'SAVINGS',
-  ];
+<div class="inputContainer">
+  <div class="transactionInput row vh-100 align-items-center">
 
-  const data = {
-    labels: labels,
-    datasets: [{
-      label: 'My First dataset',
-      backgroundColor: 'rgb(255, 99, 132)',
-      borderColor: 'rgb(255, 99, 132)',
-      data: [0, 10, 5, 2, 20, 30, 45],
-    }]
-  };
+    <div class="input-group input-group-lg">
+      <span class="input-group-text">$</span>
+      <span class="input-group-text">0.00</span>
+      <input type="text" class="form-control" aria-label="Dollar amount (with dot and two decimal places)">
+    </div>
 
-  const config = {
-    type: 'doughnut',
-    data: data,
-    options: {}
-  };
-</script>
+    <div class="input-group">
+      <span class="input-group-text">Description(optional)</span>
+      <textarea class="form-control" aria-label="With textarea"></textarea>
+    </div>
 
-<script>
-  const myChart = new Chart(
-    document.getElementById('myChart'),
-    config
-  );
-</script>
+  <div class="input-group mb-3">
+    <select class="form-select" id="inputGroupSelect02">
+      <option selected>Choose...</option>
+      <option value="1">Apps</option>
+      <option value="2">Car</option>
+      <option value="3">Clothes</option>
+      <option value="3">Phone</option>
+      <option value="3">Eating out</option>
+      <option value="3">Entertainment</option>
+      <option value="3">Gifts</option>
+      <option value="3">Groceries</option>
+      <option value="3">Health</option>
+      <option value="3">Pets</option>
+      <option value="3">House</option>
+      <option value="3">Transport</option>
+      <option value="3">Deposit</option>
+      <option value="3">Savings</option>
+    </select>
+    <label class="input-group-text" for="inputGroupSelect02">Category</label>
+  </div>
+
+    <button type="button" value="submit" class="btn btn-success btn btn-primary btn-lg d-grid gap-2 col-6 mx-auto">Add</button>
+
+  </div>
+</div>
