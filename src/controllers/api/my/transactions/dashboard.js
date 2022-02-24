@@ -5,7 +5,7 @@ const controllersApiMyDashboard = async (req, res) => {
   try {
     const userId = req.session.user.id
 
-    const foundTransactions = await prisma.transaction.findMay({
+    const foundTransactions = await prisma.transaction.findMany({
       where: {
         userId
       },
@@ -17,7 +17,7 @@ const controllersApiMyDashboard = async (req, res) => {
       }
     })
 
-    return res.json(200).json(foundTransactions)
+    return res.status(200).json(foundTransactions)
   } catch (err) {
     return handleErrors(res, res)
   }

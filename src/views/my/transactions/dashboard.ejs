@@ -50,8 +50,8 @@
       <h6>Transactions</h6>
 
       <div class="list-group">
-        <a href="#" class="list-group-item list-group-item-action list-group-item-primary">A simple primary list group item</a>
-        <a href="#" class="list-group-item list-group-item-action list-group-item-secondary">A simple secondary list group item</a>
+        <a href="/my/transactions/create/${id}" class="list-group-item list-group-item-action list-group-item-primary">A simple primary list group item</a>
+
       </div>
     `)
 
@@ -59,15 +59,25 @@
   }
 
   const generatePage = (info) => {
-    const $page = ('#pages-my-transactions-dashboard')
-    const $title = ('<h1 class="my-3">My Dashboard</h1>')
+    const $page = $('#pages-my-transactions-dashboard')
+    const $title = $('<h1 class="my-3">My Dashboard</h1>')
     const $dash = generateDashboard(info)
+    const $transactions =
 
     $page.html('').append($title).append($dash)
   }
 
-  document.ready (() => {
+  $(document).ready(() => {
     generatePage()
+
+    axios({
+      method: 'GET',
+      url: '/api/my/transactions/dashboard'
+    }).then((resp) => {
+      generatePage({
+        transactions: resp.data
+      })
+    })
 
     const myChart = new Chart(
       document.getElementById('myChart'),

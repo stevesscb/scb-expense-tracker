@@ -13,7 +13,8 @@
           <div class="col-12 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
             <div class="input-group mb-3">
               <label class="input-group-text" for="start">Transaction Date</label>
-              <input type="date" class="form-control" name="tripStart" value="${values?.tripStart || '2018-07-22'}">
+              <input type="date" class="form-control ${errors?.date && 'is-invalid'}" name="date" value="${values?.date || '2018-07-22'}">
+              <div class="invalid-feedback">${errors?.date || ''}</div>
             </div>
           </div>
 
@@ -27,7 +28,7 @@
 
           <div class="input-group mb-3">
             <label class="input-group-text" for="transaction-categories">Category</label>
-            <select class="form-select ${errors?.catergory[name] && 'is-invalid'}" name="category[name]" id="transaction-categories">
+            <select class="form-select ${errors?.category?.name && 'is-invalid'}" name="category[name]" id="transaction-categories">
               <option value="">Choose...</option>
               <option class="expense" ${values?.category?.name === 'Apps' ? 'selected' : ''} value="Apps">Apps</option>
               <option class="expense" ${values?.category?.name === 'Car' ? 'selected' : ''} value="Car">Car</option>
@@ -44,17 +45,20 @@
               <option class="income" ${values?.category?.name === 'Deposit' ? 'selected' : ''} value="Deposit">Deposit</option>
               <option class="income" ${values?.category?.name === 'Savings' ? 'selected' : ''} value="Savings">Savings</option>
             </select>
+            <div class="invalid-feedback">${errors?.category?.name || ''}</div>
           </div>
 
           <div class="input-group mb-3">
             <span class="input-group-text">$</span>
             <span class="input-group-text">0.00</span>
-            <input type="text" class="form-control ${errors?.amount && 'is-invalid'}" name="amount" value="${values?.amount || ''}">
+            <input type="text" class="form-control ${errors?.amount && 'is-invalid'}" name="amount" value="${values?.amount || '0'}">
+            <div class="invalid-feedback">${errors?.amount || ''}</div>
           </div>
 
           <div class="input-group mb-3">
             <span class="input-group-text">Description(optional)</span>
-            <textarea class="form-control" name="description">${values?.description || ''}</textarea>
+            <textarea class="form-control ${errors?.description && 'is-invalid'}" name="description">${values?.description || ''}</textarea>
+            <div class="invalid-feedback">${errors?.description || ''}</div>
           </div>
 
 
