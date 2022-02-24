@@ -5,39 +5,6 @@
 <div id="pages-my-transactions-dashboard" class="container text-center"></div>
 
 <script>
-  const generateDashboard = ({ values, errors } = {}) => {
-    console.log(values, errors)
-    const $dash = $(`
-
-    <div class="row mb-3">
-      <div class="col-12 col-md-10 offset-md-1 col-lg-8 offset-lg-2">
-        <canvas id="myChart" class="w-100"></canvas>
-      </div>
-    </div>
-
-    <h6>Transactions</h6>
-
-    <div class="list-group">
-      <a href="#" class="list-group-item list-group-item-action list-group-item-primary">A simple primary list group item</a>
-      <a href="#" class="list-group-item list-group-item-action list-group-item-secondary">A simple secondary list group item</a>
-    </div>
-    `)
-
-    return $dash
-  }
-
-  const generatePage = () => {
-    const $page = ('#pages-my-transactions-dashboard')
-    const $title = ('<h1 class="my-3">My Dashboard</h1>')
-    const $dash = generateDashboard()
-
-    $page.html('').append($title).append($dash)
-  }
-
-document.ready (() => {
-  generatePage()
-
-<script>
   const labels = [
     'APPS',
     'CAR',
@@ -70,13 +37,41 @@ document.ready (() => {
     data: data,
     options: {}
   };
-</script>
 
-<script>
-  const myChart = new Chart(
-    document.getElementById('myChart'),
-    config
-  );
-</script>
-})
+  // TODO: get all transactions and display them here
+  const generateDashboard = () => {
+    const $dash = $(`
+      <div class="row mb-3">
+        <div class="col-12 col-md-10 offset-md-1 col-lg-8 offset-lg-2">
+          <canvas id="myChart" class="w-100"></canvas>
+        </div>
+      </div>
+
+      <h6>Transactions</h6>
+
+      <div class="list-group">
+        <a href="#" class="list-group-item list-group-item-action list-group-item-primary">A simple primary list group item</a>
+        <a href="#" class="list-group-item list-group-item-action list-group-item-secondary">A simple secondary list group item</a>
+      </div>
+    `)
+
+    return $dash
+  }
+
+  const generatePage = (info) => {
+    const $page = ('#pages-my-transactions-dashboard')
+    const $title = ('<h1 class="my-3">My Dashboard</h1>')
+    const $dash = generateDashboard(info)
+
+    $page.html('').append($title).append($dash)
+  }
+
+  document.ready (() => {
+    generatePage()
+
+    const myChart = new Chart(
+      document.getElementById('myChart'),
+      config
+    );
+  })
 </script>
