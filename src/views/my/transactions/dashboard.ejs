@@ -55,7 +55,16 @@
     const $transactions = $(`
       <h6>Transactions</h6>
       <div class="list-group">
-        ${transactions.map((transaction) => `<a href="/my/transactions/edit/${transaction.id}" class="list-group-item list-group-item-action list-group-item-primary">${transaction.description}</a>`).join('')}
+        ${
+          transactions.map((transaction) => {
+            return `
+              <a
+                href="/my/transactions/edit/${transaction.id}"
+                class="list-group-item list-group-item-action list-group-item-primary"\
+              >${transaction.description} | <span class="${transaction.type === 'EXPENSE' ? 'text-danger' : 'text-success'}">${transaction.amount}</span></a>
+            `
+          }).join('')
+        }
       </div>
     `)
 
