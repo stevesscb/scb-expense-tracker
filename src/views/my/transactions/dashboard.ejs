@@ -75,7 +75,7 @@
                 <td>${transaction?.category?.name}</td>
                 <td>${transaction.description}</td>
                 <td class="${transaction.type === 'EXPENSE' ? 'text-danger' : 'text-success'}">$${transaction.amount}</td>
-                <td><a href="dashboard" class="btn btn-success btn-lg btn-sm">Edit</a></td>
+                <td><a href="edit" class="btn btn-success btn-lg btn-sm">Edit</a></td>
                 <td><button class="btn btn-danger btn-sm delete-my-transaction" data-id="${transaction.id}">Delete</button></td>
               </tr>
 

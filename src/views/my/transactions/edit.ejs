@@ -1,0 +1,127 @@
+<%- contentFor('styles') %>
+<%- contentFor('scripts') %>
+<%- contentFor('body') %>
+
+<div id="pages-my-add-transaction" class="container text-center vh-100 d-flex flex-column justify-content-center"></div>
+
+<script>
+  const generateForm = ({ values, errors } = {}) => {
+    console.log(values, errors)
+    const $form = $(`
+      <div class="row">
+        <form id="transaction-form">
+          <div class="col-12 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
+            <div class="input-group mb-3">
+              <label class="input-group-text" for="start">Transaction Date</label>
+              <input type="date" class="form-control ${errors?.date && 'is-invalid'}" name="date" value="${values?.date || '2018-07-22'}">
+              <div class="invalid-feedback">${errors?.date || ''}</div>
+            </div>
+          </div>
+
+          <div class="input-group mb-3">
+            <label class="input-group-text" for="transaction-type">Type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+            <select class="form-select ${errors?.type && 'is-invalid'}" name="type" id="transaction-type">
+              <option value="EXPENSE" ${values?.type === 'EXPENSE' ? "selected" : "" }>Expense</option>
+              <option value="INCOME" ${values?.type === 'INCOME' ? "selected" : "" }>Income</option>
+            </select>
+          </div>
+
+          <div class="input-group mb-3">
+            <label class="input-group-text" for="transaction-categories">Category</label>
+            <select class="form-select ${errors?.category?.name && 'is-invalid'}" name="category[name]" id="transaction-categories">
+              <option value="">Choose...</option>
+              <option class="expense" ${values?.category?.name === 'Apps' ? 'selected' : ''} value="Apps">Apps</option>
+              <option class="expense" ${values?.category?.name === 'Car' ? 'selected' : ''} value="Car">Car</option>
+              <option class="expense" ${values?.category?.name === 'Clothes' ? 'selected' : ''} value="Clothes">Clothes</option>
+              <option class="expense" ${values?.category?.name === 'Phone' ? 'selected' : ''} value="Phone">Phone</option>
+              <option class="expense" ${values?.category?.name === 'Eating' ? 'selected' : ''} value="Eating out">Eating out</option>
+              <option class="expense" ${values?.category?.name === 'Entertainment' ? 'selected' : ''} value="Entertainment">Entertainment</option>
+              <option class="expense" ${values?.category?.name === 'Gifts' ? 'selected' : ''} value="Gifts">Gifts</option>
+              <option class="expense" ${values?.category?.name === 'Groceries' ? 'selected' : ''} value="Groceries">Groceries</option>
+              <option class="expense" ${values?.category?.name === 'Health' ? 'selected' : ''} value="Health">Health</option>
+              <option class="expense" ${values?.category?.name === 'Pets' ? 'selected' : ''} value="Pets">Pets</option>
+              <option class="expense" ${values?.category?.name === 'House' ? 'selected' : ''} value="House">House</option>
+              <option class="expense" ${values?.category?.name === 'Transport' ? 'selected' : ''} value="Transport">Transport</option>
+              <option class="income" ${values?.category?.name === 'Deposit' ? 'selected' : ''} value="Deposit">Deposit</option>
+              <option class="income" ${values?.category?.name === 'Savings' ? 'selected' : ''} value="Savings">Savings</option>
+            </select>
+            <div class="invalid-feedback">${errors?.category?.name || ''}</div>
+          </div>
+
+          <div class="input-group mb-3">
+            <span class="input-group-text">$</span>
+            <span class="input-group-text">0.00</span>
+            <input type="text" class="form-control ${errors?.amount && 'is-invalid'}" name="amount" value="${values?.amount || '0'}">
+            <div class="invalid-feedback">${errors?.amount || ''}</div>
+          </div>
+
+          <div class="input-group mb-3">
+            <span class="input-group-text">Description(optional)</span>
+            <textarea class="form-control ${errors?.description && 'is-invalid'}" name="description">${values?.description || ''}</textarea>
+            <div class="invalid-feedback">${errors?.description || ''}</div>
+          </div>
+
+
+          <button
+            type="submit"
+            value="submit"
+            class="btn btn-success btn btn-primary btn-lg d-grid gap-2 col-6 mx-auto"
+          >Add</button>
+        </form>
+      </div>
+    `)
+
+    const value = $form.find('#transaction-type').val()
+
+    if (value === 'EXPENSE') {
+      $form.find('.income').addClass('d-none')
+    } else {
+      $form.find('.expense').addClass('d-none')
+    }
+
+    return $form
+  }
+
+  const generatePage = (info) => {
+    const $page = $('#pages-my-add-transaction')
+    const $title = $('<h1 class="text-center mb-3">Edit Transaction</h1>')
+    const $form = generateForm(info)
+
+    $page.html('').append($title).append($form)
+  }
+
+  $(document).ready(() => {
+    generatePage()
+
+    $('#pages-my-add-transaction').on('submit', '#transaction-form', (e) => {
+      e.preventDefault()
+
+      const data = new FormData(e.target)
+      $('#transaction-form button[type="submit"]').attr('disabled', true)
+
+      axios({
+        method: 'POST',
+        url: '/api/my/transactions/create',
+        data
+      }).then(() => {
+        window.location.href = `/my/transactions/dashboard`
+      }).catch((err) => {
+        console.log(err)
+        generatePage({
+          values: parseFormData(data),
+          errors: err.response.data
+        })
+      })
+    })
+
+    $('#pages-my-add-transaction').on('change', '#transaction-type', () => {
+      const data = new FormData($('#transaction-form')[0])
+      const parsedData = parseFormData(data)
+      parsedData.category.name = ''
+
+      generatePage({
+        values: parsedData
+      })
+    })
+  })
+</script>
