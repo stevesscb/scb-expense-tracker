@@ -19,7 +19,7 @@
 
           <div class="input-group mb-3">
             <label class="input-group-text" for="transaction-type">Type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-            <select class="form-select" name="type" id="transaction-type">
+            <select class="form-select ${errors?.type && 'is-invalid'}" name="type" id="transaction-type">
               <option value="EXPENSE" ${values?.type === 'EXPENSE' ? "selected" : "" }>Expense</option>
               <option value="INCOME" ${values?.type === 'INCOME' ? "selected" : "" }>Income</option>
             </select>
@@ -27,7 +27,7 @@
 
           <div class="input-group mb-3">
             <label class="input-group-text" for="transaction-categories">Category</label>
-            <select class="form-select" name="category[name]" id="transaction-categories">
+            <select class="form-select ${errors?.catergory[name] && 'is-invalid'}" name="category[name]" id="transaction-categories">
               <option value="">Choose...</option>
               <option class="expense" ${values?.category?.name === 'Apps' ? 'selected' : ''} value="Apps">Apps</option>
               <option class="expense" ${values?.category?.name === 'Car' ? 'selected' : ''} value="Car">Car</option>
@@ -49,7 +49,7 @@
           <div class="input-group mb-3">
             <span class="input-group-text">$</span>
             <span class="input-group-text">0.00</span>
-            <input type="text" class="form-control" name="amount" value="${values?.amount || ''}">
+            <input type="text" class="form-control ${errors?.amount && 'is-invalid'}" name="amount" value="${values?.amount || ''}">
           </div>
 
           <div class="input-group mb-3">
