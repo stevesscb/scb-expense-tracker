@@ -12,6 +12,7 @@ router.delete('/api/user/logout', (await import('./controllers/api/user/logout.j
 // API | MY TRANSACTIONS
 router.get('/api/my/transactions/dashboard', authenticateUser('json'), (await import('./controllers/api/my/transactions/dashboard.js')).default)
 router.post('/api/my/transactions/create', authenticateUser('json'), (await import('./controllers/api/my/transactions/create.js')).default)
+router.delete('/api/my/transactions/:id', authenticateUser('json'), (await import('./controllers/api/my/transactions/destroy.js')).default)
 
 // PAGES | USER
 router.get('/user/signup', (await import('./controllers/pages/user/signup.js')).default)

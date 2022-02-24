@@ -54,21 +54,40 @@
   const generateTransactions = ({ transactions = [] } = {}) => {
     const $transactions = $(`
       <h6>Transactions</h6>
-      <div class="list-group">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">Date</th>
+            <th scope="col">Category</th>
+            <th scope="col">Description</th>
+            <th scope="col">Amount</th>
+            <th scope="col">Edit</th>
+            <th scope="col">Delete</th>
+          </tr>
+        </thead>
+        <tbody>
         ${
           transactions.map((transaction) => {
             return `
-              <a
-                href="/my/transactions/edit/${transaction.id}"
-                class="list-group-item list-group-item-action list-group-item-primary"\
-              >${transaction.description} | <span class="${transaction.type === 'EXPENSE' ? 'text-danger' : 'text-success'}">${transaction.amount}</span></a>
+
+              <tr>
+                <th scope="row">${moment(transaction.date).format('DD/MM/YYYY')}</th>
+                <td>${transaction?.category?.name}</td>
+                <td>${transaction.description}</td>
+                <td class="${transaction.type === 'EXPENSE' ? 'text-danger' : 'text-success'}">$${transaction.amount}</td>
+                <td><a href="dashboard" class="btn btn-success btn-lg btn-sm">Edit</a></td>
+                <td><button class="btn btn-danger btn-sm delete-my-transaction" data-id="${transaction.id}">Delete</button></td>
+              </tr>
+
             `
           }).join('')
         }
-      </div>
+        </tbody>
+      </table>
     `)
 
     return $transactions
+    console.log(generateTransactions(info))
   }
 
   const generatePage = (info) => {
@@ -102,5 +121,18 @@
         config
       );
     })
+
+    $('#pages-my-transactions-dashboard').on('click', '.delete-my-transaction', (e) => {
+      $(e.target).attr('disabled', true)
+      const tId = $(e.target).data('id')
+
+      axios({
+        method: 'DELETE',
+        url: `/api/my/transactions/${tId}`
+      }).then((resp) => {
+        $(e.target).parents('tr').remove()
+      })
+    })
+
   })
 </script>
