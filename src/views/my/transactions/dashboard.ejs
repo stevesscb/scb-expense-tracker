@@ -39,36 +39,46 @@
   };
 
   // TODO: get all transactions and display them here
-  const generateDashboard = () => {
-    const $dash = $(`
+  const generateChart = () => {
+    const $chart = $(`
       <div class="row mb-3">
         <div class="col-12 col-md-10 offset-md-1 col-lg-8 offset-lg-2">
           <canvas id="myChart" class="w-100"></canvas>
         </div>
       </div>
+    `)
 
+    return $chart
+  }
+
+  const generateTransactions = ({ transactions = [] } = {}) => {
+    const $transactions = $(`
       <h6>Transactions</h6>
-
       <div class="list-group">
-        <a href="/my/transactions/create/${id}" class="list-group-item list-group-item-action list-group-item-primary">A simple primary list group item</a>
-
+        ${transactions.map((transaction) => `<a href="/my/transactions/edit/${transaction.id}" class="list-group-item list-group-item-action list-group-item-primary">${transaction.description}</a>`).join('')}
       </div>
     `)
 
-    return $dash
+    return $transactions
   }
 
   const generatePage = (info) => {
     const $page = $('#pages-my-transactions-dashboard')
     const $title = $('<h1 class="my-3">My Dashboard</h1>')
-    const $dash = generateDashboard(info)
-    const $transactions =
+    const $chart = generateChart(info)
+    const $transactions = generateTransactions(info)
 
-    $page.html('').append($title).append($dash)
+    $page.html('').append($title).append($chart).append($transactions)
   }
 
   $(document).ready(() => {
+    let chart
+
     generatePage()
+    chart = new Chart(
+      document.getElementById('myChart'),
+      config
+    )
 
     axios({
       method: 'GET',
@@ -77,11 +87,11 @@
       generatePage({
         transactions: resp.data
       })
-    })
 
-    const myChart = new Chart(
-      document.getElementById('myChart'),
-      config
-    );
+      chart = new Chart(
+        document.getElementById('myChart'),
+        config
+      );
+    })
   })
 </script>
