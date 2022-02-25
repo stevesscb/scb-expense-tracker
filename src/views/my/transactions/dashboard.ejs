@@ -22,22 +22,6 @@
     'SAVINGS',
   ];
 
-  const data = {
-    labels: labels,
-    datasets: [{
-      label: 'My First dataset',
-      backgroundColor: 'rgb(255, 99, 132)',
-      borderColor: 'rgb(255, 99, 132)',
-      data: [0, 10, 5, 2, 20, 30, 45],
-    }]
-  };
-
-  const config = {
-    type: 'doughnut',
-    data: data,
-    options: {}
-  };
-
   // TODO: get all transactions and display them here
   const generateChart = () => {
     const $chart = $(`
@@ -87,7 +71,6 @@
     `)
 
     return $transactions
-    console.log(generateTransactions(info))
   }
 
   const generatePage = (info) => {
@@ -95,18 +78,41 @@
     const $title = $('<h1 class="my-3">My Dashboard</h1>')
     const $chart = generateChart(info)
     const $transactions = generateTransactions(info)
+    console.log($transactions[2])
 
     $page.html('').append($title).append($chart).append($transactions)
+  }
+
+  const groupExpenseIncome = (transactions) => {
+    const expenses = transactions.filter((t) => {
+      return t.type === 'EXPENSE'
+    })
+
+    const totalExpenses = expenses.reduce((total, e) => {
+      return total + e.amount
+    },0)
+
+    const income = transactions.filter((t) => {
+      return t.type === 'INCOME'
+    })
+
+    const totalIncome = income.reduce((total, i) => {
+      return total + i.amount
+    },0)
+
+    return {
+      expenses,
+      totalExpenses,
+      income,
+      totalIncome
+    }
   }
 
   $(document).ready(() => {
     let chart
 
     generatePage()
-    chart = new Chart(
-      document.getElementById('myChart'),
-      config
-    )
+
 
     axios({
       method: 'GET',
@@ -116,10 +122,29 @@
         transactions: resp.data
       })
 
+      const groups = groupExpenseIncome(resp.data)
+      console.log(groups)
+
+      const config = {
+        type: 'doughnut',
+        data: {
+          labels: ['income', 'expense'],
+          datasets: [{
+            label: 'My Transactions',
+            borderColor: 'rgb(255, 99, 132)',
+            data: [groups.totalIncome, groups.totalExpenses],
+            backgroundColor: [
+              'rgba(245, 39, 39, 0.8)',
+              'rgba(88, 89, 244, 0.8)',
+            ],
+          }]
+        }
+      }
+
       chart = new Chart(
         document.getElementById('myChart'),
         config
-      );
+      )
     })
 
     $('#pages-my-transactions-dashboard').on('click', '.delete-my-transaction', (e) => {

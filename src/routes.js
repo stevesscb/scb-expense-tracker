@@ -24,4 +24,7 @@ router.get('/my/transactions/create', authenticateUser('html'), (await import('.
 router.get('/my/transactions/dashboard', authenticateUser('html'), (await import('./controllers/pages/my/transactions/dashboard.js')).default)
 router.get('/my/transactions/:id/edit', authenticateUser('html'), (await import('./controllers/pages/my/transactions/edit.js')).default)
 
+// STATIC | LANDING PAGE
+router.get('/', (req, res) => { res.redirect('/user/login') })
+
 export default router
