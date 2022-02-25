@@ -5,28 +5,13 @@
 <div id="pages-my-transactions-dashboard" class="container text-center"></div>
 
 <script>
-  const labels = [
-    'APPS',
-    'CAR',
-    'CLOTHES',
-    'PHONE',
-    'EATING OUT',
-    'ENTERTAINMENT',
-    'GIFTS',
-    'GROCERIES',
-    'HEALTH',
-    'PETS',
-    'HOUSE',
-    'TRANSPORT',
-    'DEPOSIT',
-    'SAVINGS',
-  ];
+  let chart = null
+  let transactions = []
 
-  // TODO: get all transactions and display them here
   const generateChart = () => {
     const $chart = $(`
       <div class="row mb-3">
-        <div class="col-12 col-md-10 offset-md-1 col-lg-8 offset-lg-2">
+        <div class="col-12 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
           <canvas id="myChart" class="w-100"></canvas>
         </div>
       </div>
@@ -35,9 +20,9 @@
     return $chart
   }
 
-  const generateTransactions = ({ transactions = [] } = {}) => {
+  const generateTransactions = () => {
     const $transactions = $(`
-      <h6>Transactions</h6>
+      <h2>Transactions</h2>
       <table class="table table-hover">
         <thead>
           <tr>
@@ -51,9 +36,8 @@
         </thead>
         <tbody>
         ${
-          transactions.map((transaction) => {
+          transactions.map((transaction, index) => {
             return `
-
               <tr>
                 <th scope="row">${moment(transaction.date).format('DD/MM/YYYY')}</th>
                 <td>${transaction?.category?.name}</td>
@@ -62,7 +46,6 @@
                 <td><a href="edit" class="btn btn-success btn-lg btn-sm">Edit</a></td>
                 <td><button class="btn btn-danger btn-sm delete-my-transaction" data-id="${transaction.id}">Delete</button></td>
               </tr>
-
             `
           }).join('')
         }
@@ -73,78 +56,47 @@
     return $transactions
   }
 
-  const generatePage = (info) => {
-    const $page = $('#pages-my-transactions-dashboard')
-    const $title = $('<h1 class="my-3">My Dashboard</h1>')
-    const $chart = generateChart(info)
-    const $transactions = generateTransactions(info)
-    console.log($transactions[2])
+  const updateChart = () => {
+    const expenses = transactions.filter((t) => (t.type === 'EXPENSE'))
+    const totalExpenses = expenses.reduce((total, e) => (total + e.amount), 0)
+    const income = transactions.filter((t) => (t.type === 'INCOME'))
+    const totalIncome = income.reduce((total, i) => (total + i.amount), 0)
 
-    $page.html('').append($title).append($chart).append($transactions)
+    chart = new Chart( document.getElementById('myChart'), {
+      type: 'doughnut',
+      data: {
+        labels: ['Income', 'Expense'],
+        datasets: [{
+          label: 'My Transactions',
+          data: [totalIncome, totalExpenses],
+          backgroundColor: [
+            'rgba(0, 255, 0, 0.8)',
+            'rgba(255, 0, 0, 0.8)'
+          ]
+        }]
+      }
+    })
   }
 
-  const groupExpenseIncome = (transactions) => {
-    const expenses = transactions.filter((t) => {
-      return t.type === 'EXPENSE'
-    })
+  const generatePage = () => {
+    const $page = $('#pages-my-transactions-dashboard')
+    const $title = $('<h1 class="my-3">My Dashboard</h1>')
+    const $chart = generateChart()
+    const $transactions = generateTransactions()
 
-    const totalExpenses = expenses.reduce((total, e) => {
-      return total + e.amount
-    },0)
-
-    const income = transactions.filter((t) => {
-      return t.type === 'INCOME'
-    })
-
-    const totalIncome = income.reduce((total, i) => {
-      return total + i.amount
-    },0)
-
-    return {
-      expenses,
-      totalExpenses,
-      income,
-      totalIncome
-    }
+    $page.html('').append($title).append($chart).append($transactions)
+    updateChart()
   }
 
   $(document).ready(() => {
-    let chart
-
     generatePage()
-
-
     axios({
       method: 'GET',
       url: '/api/my/transactions/dashboard'
     }).then((resp) => {
-      generatePage({
-        transactions: resp.data
-      })
-
-      const groups = groupExpenseIncome(resp.data)
-      console.log(groups)
-
-      const config = {
-        type: 'doughnut',
-        data: {
-          labels: ['income', 'expense'],
-          datasets: [{
-            label: 'My Transactions',
-            borderColor: 'rgb(255, 99, 132)',
-            data: [groups.totalIncome, groups.totalExpenses],
-            backgroundColor: [
-              'rgba(245, 39, 39, 0.8)',
-              'rgba(88, 89, 244, 0.8)',
-            ],
-          }]
-        }
-      }
-
-      chart = new Chart(
-        document.getElementById('myChart'),
-        config
-      )
+      // resp = [ {id, amount, type... }, {}, ... ]
+      transactions = resp.data
+      generatePage()
     })
 
     $('#pages-my-transactions-dashboard').on('click', '.delete-my-transaction', (e) => {
@@ -155,7 +107,12 @@
         method: 'DELETE',
         url: `/api/my/transactions/${tId}`
       }).then((resp) => {
-        $(e.target).parents('tr').remove()
+        // resp = { id, amount, type }
+        const foundIndex = transactions.findIndex((t) => (t.id === tId))
+        if (foundIndex >= 0) {
+          transactions.splice(foundIndex, 1)
+          generatePage()
+        }
       })
     })
 
