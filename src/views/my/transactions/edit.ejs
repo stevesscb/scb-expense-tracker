@@ -9,18 +9,19 @@
     console.log(values, errors)
     const $form = $(`
       <div class="row">
-        <form id="transaction-form">
+        <form id="edit-transaction-form">
           <div class="col-12 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
+
             <div class="input-group mb-3">
               <label class="input-group-text" for="start">Transaction Date</label>
-              <input type="date" class="form-control ${errors?.date && 'is-invalid'}" name="date" value="${values?.date || '2018-07-22'}">
+              <input type="date" class="form-control ${errors?.date && 'is-invalid'}" name="date" value="${values?.get?.('transaction.date') || values?.date || ''}"></input>
               <div class="invalid-feedback">${errors?.date || ''}</div>
             </div>
           </div>
 
           <div class="input-group mb-3">
             <label class="input-group-text" for="transaction-type">Type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-            <select class="form-select ${errors?.type && 'is-invalid'}" name="type" id="transaction-type">
+            <select class="form-select ${errors?.type && 'is-invalid'}" name="type" id="transaction-type" value="${values?.get?.('type') || values?.type|| ''}">
               <option value="EXPENSE" ${values?.type === 'EXPENSE' ? "selected" : "" }>Expense</option>
               <option value="INCOME" ${values?.type === 'INCOME' ? "selected" : "" }>Income</option>
             </select>
@@ -57,7 +58,7 @@
 
           <div class="input-group mb-3">
             <span class="input-group-text">Description(optional)</span>
-            <textarea class="form-control ${errors?.description && 'is-invalid'}" name="description">${values?.description || ''}</textarea>
+            <textarea class="form-control ${errors?.description && 'is-invalid'}" name="description">${values?.get?.description || ''}</textarea>
             <div class="invalid-feedback">${errors?.description || ''}</div>
           </div>
 
