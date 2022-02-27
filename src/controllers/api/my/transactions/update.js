@@ -4,9 +4,10 @@ import prisma from '../../../_helpers/prisma.js'
 import handleErrors from '../../../_helpers/handle-errors.js'
 
 const updateSchema = yup.object({
-  title: yup.string().required(),
+  type: yup.string().required(),
   description: yup.string(),
   amount: yup.number().min(0.01),
+  date: yup.date(),
   category: yup.object({
     name: yup.string().required()
   })
