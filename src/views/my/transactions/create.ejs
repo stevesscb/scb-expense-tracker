@@ -13,7 +13,7 @@
           <div class="col-12 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
             <div class="input-group mb-3">
               <label class="input-group-text" for="start">Transaction Date</label>
-              <input type="date" class="form-control ${errors?.date && 'is-invalid'}" name="date" value="${values?.date || '2022-02-25'}">
+              <input type="date" class="form-control ${errors?.date && 'is-invalid'}" name="date" value="${values?.date || moment().format('YYYY-MM-DD')}">
               <div class="invalid-feedback">${errors?.date || ''}</div>
             </div>
           </div>
@@ -34,7 +34,7 @@
               <option class="expense" ${values?.category?.name === 'Car' ? 'selected' : ''} value="Car">Car</option>
               <option class="expense" ${values?.category?.name === 'Clothes' ? 'selected' : ''} value="Clothes">Clothes</option>
               <option class="expense" ${values?.category?.name === 'Phone' ? 'selected' : ''} value="Phone">Phone</option>
-              <option class="expense" ${values?.category?.name === 'Eating' ? 'selected' : ''} value="Eating out">Eating out</option>
+              <option class="expense" ${values?.category?.name === 'Eating' ? 'selected' : ''} value="Eating">Eating</option>
               <option class="expense" ${values?.category?.name === 'Entertainment' ? 'selected' : ''} value="Entertainment">Entertainment</option>
               <option class="expense" ${values?.category?.name === 'Gifts' ? 'selected' : ''} value="Gifts">Gifts</option>
               <option class="expense" ${values?.category?.name === 'Groceries' ? 'selected' : ''} value="Groceries">Groceries</option>

@@ -42,8 +42,8 @@
                 <th scope="row">${moment(transaction.date).format('DD/MM/YYYY')}</th>
                 <td>${transaction?.category?.name}</td>
                 <td>${transaction.description}</td>
-                <td class="${transaction.type === 'EXPENSE' ? 'text-danger' : 'text-success'}">$${transaction.amount}</td>
-                <td><a href="edit/${transaction.id}" class="btn btn-success btn-lg btn-sm">Edit</a></td>
+                <td class="${transaction.type === 'EXPENSE' ? 'text-danger' : 'text-success'}">$${transaction.amount.toLocaleString()}</td>
+                <td><a href="${transaction.id}/edit" class="btn btn-success btn-lg btn-sm">Edit</a></td>
                 <td><button class="btn btn-danger btn-sm delete-my-transaction" data-id="${transaction.id}">Delete</button></td>
               </tr>
             `

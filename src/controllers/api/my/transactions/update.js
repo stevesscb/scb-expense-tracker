@@ -17,7 +17,25 @@ const controllersApiTransactionsUpdate = async (req, res) => {
   try {
     const { params: { id }, body } = req
     const verifiedData = await updateSchema.validate(body, { abortEarly: false, stripUnknown: true })
-    const updated = await prisma.transaction.update({ where: { id: Number(id) }, data: verifiedData })
+    const updated = await prisma.transaction.update({
+      where: {
+        id: Number(id)
+      },
+      data: {
+        ...verifiedData,
+        category: {
+          connectOrCreate: {
+            where: {
+              name: verifiedData.category.name
+            },
+            create: {
+              name: verifiedData.category.name,
+              type: verifiedData.type
+            }
+          }
+        }
+      }
+    })
     return res.status(200).json(updated)
   } catch (err) {
     return handleErrors(res, err)
