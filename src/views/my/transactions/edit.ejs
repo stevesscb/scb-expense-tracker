@@ -2,14 +2,14 @@
 <%- contentFor('scripts') %>
 <%- contentFor('body') %>
 
-<div id="pages-my-add-transaction" class="container text-center vh-100 d-flex flex-column justify-content-center"></div>
+<div id="pages-my-transactions-edit" class="container text-center vh-100 d-flex flex-column justify-content-center"></div>
 
 <script>
   const generateForm = ({ values, errors } = {}) => {
     console.log(values, errors)
     const $form = $(`
       <div class="row">
-        <form id="edit-transaction-form">
+        <form id="transaction-edit-form">
           <div class="col-12 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
 
             <div class="input-group mb-3">
@@ -94,34 +94,40 @@
   $(document).ready(() => {
     generatePage()
 
-    $('#pages-my-add-transaction').on('submit', '#transaction-form', (e) => {
+    axios({
+      method: 'GET',
+      url: `/my/transactions/edit`,
+      data
+    }).then((resp) => {
+      $('#pages-my-transactions-edit').html(generatePage({
+        isLoading: false,
+        values: parseFormData(data),
+        errors: err.response.data
+      }))
+    }).catch((err) => {
+      $('#pages-my-transactions-edit').html(generatePage({
+        isLoading: false
+      }))
+    }),
+
+      $('#pages-my-transactions-edit').on('submit', '#transaction-edit-form', (e) => {
       e.preventDefault()
 
       const data = new FormData(e.target)
-      $('#transaction-form button[type="submit"]').attr('disabled', true)
+      $('#transaction-edit-form button[type="submit"]').attr('disabled', true)
 
       axios({
-        method: 'POST',
-        url: '/api/my/transactions/create',
+        method: 'PUT',
+        url: `/my/transactions/edit`,
         data
-      }).then(() => {
-        window.location.href = `/my/transactions/dashboard`
+      }).then((resp) => {
+        window.location.href = `/my/transactions/dashboard/${resp.data}`
       }).catch((err) => {
-        console.log(err)
-        generatePage({
+        $('#pages-my-transactions-edit').html(generatePage({
+          isLoading: false,
           values: parseFormData(data),
           errors: err.response.data
-        })
-      })
-    })
-
-    $('#pages-my-add-transaction').on('change', '#transaction-type', () => {
-      const data = new FormData($('#transaction-form')[0])
-      const parsedData = parseFormData(data)
-      parsedData.category.name = ''
-
-      generatePage({
-        values: parsedData
+        }))
       })
     })
   })
