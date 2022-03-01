@@ -12,7 +12,7 @@
         <form id="transaction-form">
           <div class="col-12 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
             <div class="input-group mb-3">
-              <label class="input-group-text" for="start">Transaction Date</label>
+              <label class="input-group-text input-group-sm" for="start">Transaction Date</label>
               <input type="date" class="form-control ${errors?.date && 'is-invalid'}" name="date" value="${values?.date || moment().format('YYYY-MM-DD')}">
               <div class="invalid-feedback">${errors?.date || ''}</div>
             </div>
@@ -85,9 +85,10 @@
   const generatePage = (info) => {
     const $page = $('#pages-my-add-transaction')
     const $title = $('<h1 class="text-center mb-3">Add Transaction</h1>')
+    const $image =$('<img src="/img/money-colour-chart.png" class="mx-auto d-block my-3" alt="watering money tree" width="200" height="200">')
     const $form = generateForm(info)
 
-    $page.html('').append($title).append($form)
+    $page.html('').append($title).append($image).append($form)
   }
 
   $(document).ready(() => {

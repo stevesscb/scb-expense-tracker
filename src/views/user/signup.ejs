@@ -34,7 +34,9 @@ const generateForm = (values = {}, errors = {}) => {
 
 const generatePage = (values, errors) => {
   return `
-    <h1 class="text-center">Signup</h1>
+    <h1 class="text-center">Expense Tracker</h1>
+    <img src="/img/money-colour-chart.png" class="mx-auto d-block my-5" alt="watering money tree" width="200" height="200">
+    <h4 class="text-center">Sign up</h4>
 
     ${generateForm(values, errors)}
   `
