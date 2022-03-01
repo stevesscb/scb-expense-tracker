@@ -24,15 +24,15 @@
     const $transactions = $(`
       <h2 class="my-3">Transactions</h2>
 
-      <div class="btn-group">
-        <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+      <div id="filter" class="btn-group">
+        <div type="button" class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
           Order by
-        </button>
+        </div>
         <ul class="dropdown-menu dropdown-menu-end">
-          <li><button class="dropdown-item" type="button">Date (old to new)</button></li>
-          <li><button class="dropdown-item" type="button">Date (new to old)</button></li>
-          <li><button class="dropdown-item" type="button">Amount (high to low)</button></li>
-          <li><button class="dropdown-item" type="button">Amount (low to high)</button></li>
+          <li><button data-order-by="date" data-sort-by="desc" class="dropdown-item" type="button">Date <span class="text-danger">(Newest > Oldest)</span></button></li>
+          <li><button data-order-by="date" data-sort-by="asc" class="dropdown-item" type="button">Date <span class="text-danger">(Oldest > Newest)</span></button></li>
+          <li><button data-order-by="amount" data-sort-by="desc" class="dropdown-item" type="button">Amount <span class="text-danger">(High > Low)</span></button></li>
+          <li><button data-order-by="amount" data-sort-by="asc" class="dropdown-item" type="button">Amount <span class="text-danger">(Low > High)</span></button></li>
           </ul>
       </div>
 
@@ -129,6 +129,24 @@
         }
       })
     })
+
+    $('#pages-my-transactions-dashboard').on('click', '#filter .dropdown-item', (e) => {
+
+      const queries = {
+        orderBy: $(e.currentTarget).data('order-by'),
+        sortBy: $(e.currentTarget).data('sort-by')
+      }
+      axios({
+        method: 'GET',
+        url: '/api/my/transactions/dashboard',
+        params: queries
+      }).then((resp) => {
+        // resp = [ {id, amount, type... }, {}, ... ]
+        transactions = resp.data
+        generatePage()
+      })
+    })
+
 
   })
 </script>

@@ -4,13 +4,18 @@ import handleErrors from '../../../_helpers/handle-errors.js'
 const controllersApiMyDashboard = async (req, res) => {
   try {
     const userId = req.session.user.id
+    const orderBy = req.query.orderBy || 'id'
+    const sortBy = req.query.sortBy || 'asc'
+    // localhost:3000/my/transactions/dashboard?orderBy=amount
+    // localhost:3000/my/transactions/dashboard?orderBy=date
 
     const foundTransactions = await prisma.transaction.findMany({
       where: {
         userId
       },
       orderBy: {
-        date: 'asc'
+        [orderBy]: sortBy
+        // id: asc
       },
       include: {
         category: true
