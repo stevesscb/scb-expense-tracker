@@ -1,19 +1,6 @@
-<script>
-$(document).ready(() => {
-  $('#user-logout').on('click', (e) => {
-    e.preventDefault()
 
-    axios({
-      method: 'DELETE',
-      url: '/api/user/logout'
-    }).then(() => {
-      window.location.href = '/user/login'
-    })
-  })
-})
-</script>
 
-<nav id="navbar" class="navbar navbar-expand-lg navbar-light bg-light">
+<nav id="navbar" class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container-fluid">
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -26,9 +13,9 @@ $(document).ready(() => {
             Filter
           </a>
           <ul class="dropdown-menu mb-3" aria-labelledby="navbarDropdownMenuLink">
-            <li><a class="dropdown-item" href="#">Today</a></li>
-            <li><a class="dropdown-item" href="#">last 2 Weeks</a></li>
-            <li><a class="dropdown-item" href="#">Last Month</a></li>
+            <li><a data-days="1"class="dropdown-item" href="#">Today</a></li>
+            <li><a data-days="14"class="dropdown-item" href="#">last 2 Weeks</a></li>
+            <li><a data-days="30" class="dropdown-item" href="#">Last Month</a></li>
             <li><a class="dropdown-item" href="#">All</a></li>
           </ul>
         </li>
@@ -53,3 +40,35 @@ $(document).ready(() => {
     </div>
   </div>
 </nav>
+
+<script>
+
+    $(document).ready(() => {
+      $('#user-logout').on('click', (e) => {
+        e.preventDefault()
+
+        axios({
+          method: 'DELETE',
+          url: '/api/user/logout'
+        }).then(() => {
+          window.location.href = '/user/login'
+        })
+      })
+    })
+
+    $('#navbar').on('click', '.dropdown-item', (e) => {
+      console.log($(e.currentTarget))
+      const queries = {
+        date: $(e.currentTarget).data('days')
+      }
+      axios({
+        method: 'GET',
+        url: '/api/my/transactions/dashboard',
+        params: queries
+      }).then((resp) => {
+        transactions = resp.data
+        generatePage()
+      })
+    })
+
+</script>

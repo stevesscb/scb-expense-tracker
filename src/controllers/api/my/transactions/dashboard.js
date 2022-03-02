@@ -1,3 +1,4 @@
+import moment from 'moment'
 import prisma from '../../../_helpers/prisma.js'
 import handleErrors from '../../../_helpers/handle-errors.js'
 
@@ -6,12 +7,14 @@ const controllersApiMyDashboard = async (req, res) => {
     const userId = req.session.user.id
     const orderBy = req.query.orderBy || 'id'
     const sortBy = req.query.sortBy || 'asc'
-    // localhost:3000/my/transactions/dashboard?orderBy=amount
-    // localhost:3000/my/transactions/dashboard?orderBy=date
+    const date = req.query.date || '30'
 
     const foundTransactions = await prisma.transaction.findMany({
       where: {
-        userId
+        userId,
+        date: {
+          gte: new Date(moment().subtract(date, 'days'))
+        }
       },
       orderBy: {
         [orderBy]: sortBy
@@ -24,7 +27,7 @@ const controllersApiMyDashboard = async (req, res) => {
 
     return res.status(200).json(foundTransactions)
   } catch (err) {
-    return handleErrors(res, res)
+    return handleErrors(res, err)
   }
 }
 

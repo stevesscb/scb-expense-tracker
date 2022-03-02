@@ -88,9 +88,10 @@
   const generatePage = (info) => {
     const $page = $('#pages-my-transactions-edit')
     const $title = $('<h1 class="text-center mb-3">Edit Transaction</h1>')
+    const $image =$('<img src="/img/money-colour-chart.png" class="mx-auto d-block my-3" alt="watering money tree" width="200" height="200">')
     const $form = generateForm(info)
 
-    $page.html('').append($title).append($form)
+    $page.html('').append($title).append($image).append($form)
   }
 
   $(document).ready(() => {
