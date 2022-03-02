@@ -13,10 +13,10 @@
             Filter
           </a>
           <ul class="dropdown-menu mb-3" aria-labelledby="navbarDropdownMenuLink">
-            <li><a data-days="1"class="dropdown-item" href="#">Today</a></li>
-            <li><a data-days="14"class="dropdown-item" href="#">last 2 Weeks</a></li>
-            <li><a data-days="30" class="dropdown-item" href="#">Last Month</a></li>
-            <li><a class="dropdown-item" href="#">All</a></li>
+            <li><a data-date="Today" class="dropdown-item" href="#">Today</a></li>
+            <li><a data-date="2Week" class="dropdown-item" href="#">last 2 Weeks</a></li>
+            <li><a data-date="Month" class="dropdown-item" href="#">Last Month</a></li>
+            <li><a data-date="All" class="dropdown-item" href="#">All</a></li>
           </ul>
         </li>
 
@@ -59,7 +59,7 @@
     $('#navbar').on('click', '.dropdown-item', (e) => {
       console.log($(e.currentTarget))
       const queries = {
-        date: $(e.currentTarget).data('days')
+        date: $(e.currentTarget).data('date')
       }
       axios({
         method: 'GET',
